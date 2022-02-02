@@ -3,7 +3,7 @@ from IPython.display import display
 
 display(witdth=600, height=600, center=vector(6, 0, 0), background=color.white)
 wall = box(pos=vector(0, 1, 0), size=vector(0, 2, 3), color=color.green)
-mass = box(pos=vector(float(input('Initial displacement: ')), 0, 0), velocity=vector(float(input('Initial velocity: ')), 0, 0), size=vector(1, 1, 1), mass=5.0, color=color.blue)
+Mass = box(pos=vector(float(input('Initial displacement: ')), 0, 0), velocity=vector(float(input('Initial velocity: ')),0, 0), size=vector(1, 1, 1), mass=5.0, color=color.yellow)
 pivot = vector(0, 0, 0)
 spring = helix(pos=pivot, axis=Mass.pos - pivot, radius=0.4, constant=float(input('spring constant: ')), damping=float(input('damping constant: ')), thickness=0.1, coils=20, color=color.red)
 
