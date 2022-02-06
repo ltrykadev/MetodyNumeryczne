@@ -17,7 +17,7 @@ sciana3 = box(pos=vector(3.0, 0.0, 0.0), size=vector(0.5, 3.0, 3.0), color=color
 podloga = box(pos=vector(0.0, -1.5, 0.0), size=vector(6.5, 0.5, 3.0), color=color.red)
 sufit = box(pos=vector(0.0, 1.5, 0.0), size=vector(6.5, 0.5, 3.0), color=color.red)
 pudelko = box(pos=vector(position_initial, 0.0, 0.0), size=vector(1.0, 1.0, 1.0), color=color.yellow, weight=1.0, speed=vector(speed_initial, 0.0, 0.0), leave_matrix=0)
-sprezyna = helix(pos=vector(-2.75, 0.0, 0.0), axis=vector(0.0, 0.0, 0.0), radius=0.2, thickness=0.2, coils=10, color=color.green, stiffness=stiffness_initial, springiness=springiness_initial)
+sprezyna = helix(pos=vector(-2.75, 0.0, 0.0), axis=vector(0.0, 0.0, 0.0), radius=0.2, thickness=0.2, coils=8, color=color.green, stiffness=stiffness_initial, springiness=springiness_initial)
 
 scene.append_to_caption('Zakończyć symulację ? \n')
 def Menu(m):
@@ -69,31 +69,56 @@ def Menu(su):
     else:
         sufit.size = vector(0.0, 0.0, 0.0)
 menu(choices=['TAK', 'NIE'], bind=Menu)
+scene.append_to_caption('\n\n')
+
+scene.append_to_caption('Pokazać obiekt pudelko? ')
+def Menu(pu):
+    if pu.selected == 'TAK':
+        pudelko.size = vector(1.0, 1.0, 1.0)
+    else:
+        pudelko.size = vector(0.0, 0.0, 0.0)
+menu(choices=['TAK', 'NIE'], bind=Menu)
+scene.append_to_caption('\n')
+
+scene.append_to_caption('Pokazać obiekt sprezyna? ')
+def Menu(pu):
+    if pu.selected == 'TAK':
+        sprezyna.coils = 8
+    else:
+        sprezyna.coils = 0
+menu(choices=['TAK', 'NIE'], bind=Menu)
 scene.append_to_caption('\n')
 
 dt = 0.01
 punkt_rownowagi = vector(0.0, 0.0, 0.0)
+first_run = 1
 
 while (pudelko.leave_matrix == 0):
     rate(500)
 
     krok1_x = punkt_rownowagi - pudelko.pos
-    krok1_v = pudelko.speed
+    if (first_run == 1):
+        krok1_v = pudelko.speed
+        first_run = 0
+    else:
+        pudelko.speed = pudelko.speed + krok4_a * dt
+        krok1_v = pudelko.speed
     krok1_a = -1 * (((sprezyna.springiness / pudelko.weight) * krok1_v) - ((sprezyna.stiffness / pudelko.weight) * krok1_x))
+
     krok2_x = krok1_x + krok1_v * (1/2 * dt)
     krok2_v = krok1_v + krok1_a * (1/2 * dt)
     krok2_a = -1 * (((sprezyna.springiness / pudelko.weight) * krok2_v) - ((sprezyna.stiffness / pudelko.weight) * krok2_x))
+
     krok3_x = krok1_x + krok2_v * (1/2 * dt)
     krok3_v = krok1_v + krok2_a * (1/2 * dt)
     krok3_a = -1 * (((sprezyna.springiness / pudelko.weight) * krok3_v) - ((sprezyna.stiffness / pudelko.weight) * krok3_x))
+
     krok4_x = krok1_x + krok3_v * dt
     krok4_v = krok1_v + krok3_a * dt
     krok4_a = -1 * (((sprezyna.springiness / pudelko.weight) * krok4_v) - ((sprezyna.stiffness / pudelko.weight) * krok4_x))
 
     pudelko.pos = pudelko.pos + 1/6 * (krok1_v + 2 * krok2_v + 2 * krok3_v + krok4_v) * dt
     sprezyna.axis = pudelko.pos - sprezyna.pos - vector(0.5, 0.0, 0.0)
-
-    pudelko.speed = pudelko.speed + krok4_a * dt
 
     print(scene.camera.pos)
     print(scene.camera.axis)
