@@ -16,7 +16,7 @@ sciana2 = box(pos=vector(0.0, 0.0, -1.25), size=vector(6.5, 3.0, 0.5), color=col
 sciana3 = box(pos=vector(3.0, 0.0, 0.0), size=vector(0.5, 3.0, 3.0), color=color.red)   # prawa
 podloga = box(pos=vector(0.0, -1.5, 0.0), size=vector(6.5, 0.5, 3.0), color=color.red)
 sufit = box(pos=vector(0.0, 1.5, 0.0), size=vector(6.5, 0.5, 3.0), color=color.red)
-pudelko = box(pos=vector(position_initial, 0.0, 0.0), size=vector(1.0, 1.0, 1.0), color=color.yellow, weight=1.0, speed=vector(speed_initial, 0.0, 0.0), leave_matrix=0)
+pudelko = box(pos=vector(position_initial, 0.0, 0.0), size=vector(1.0, 1.0, 1.0), color=color.yellow, weight=0.5, speed=vector(speed_initial, 0.0, 0.0), leave_matrix=0)
 sprezyna = helix(pos=vector(-2.75, 0.0, 0.0), axis=vector(0.0, 0.0, 0.0), radius=0.2, thickness=0.2, coils=8, color=color.green, stiffness=stiffness_initial, springiness=springiness_initial)
 
 scene.append_to_caption('Zakończyć symulację ? \n')
@@ -103,22 +103,22 @@ while (pudelko.leave_matrix == 0):
     else:
         pudelko.speed = pudelko.speed + krok4_a * dt
         krok1_v = pudelko.speed
-    krok1_a = -1 * (((sprezyna.springiness / pudelko.weight) * krok1_v) - ((sprezyna.stiffness / pudelko.weight) * krok1_x))
+    krok1_a = -1 * ((sprezyna.stiffness * krok1_v) / pudelko.weight) - ((sprezyna.springiness * krok1_x) / pudelko.weight)
 
     krok2_x = krok1_x + krok1_v * (1/2 * dt)
     krok2_v = krok1_v + krok1_a * (1/2 * dt)
-    krok2_a = -1 * (((sprezyna.springiness / pudelko.weight) * krok2_v) - ((sprezyna.stiffness / pudelko.weight) * krok2_x))
+    krok2_a = -1 * ((sprezyna.stiffness * krok2_v) / pudelko.weight) - ((sprezyna.springiness * krok2_x) / pudelko.weight)
 
     krok3_x = krok1_x + krok2_v * (1/2 * dt)
     krok3_v = krok1_v + krok2_a * (1/2 * dt)
-    krok3_a = -1 * (((sprezyna.springiness / pudelko.weight) * krok3_v) - ((sprezyna.stiffness / pudelko.weight) * krok3_x))
+    krok3_a = -1 * ((sprezyna.stiffness * krok3_v) / pudelko.weight) - ((sprezyna.springiness * krok3_x) / pudelko.weight)
 
     krok4_x = krok1_x + krok3_v * dt
     krok4_v = krok1_v + krok3_a * dt
-    krok4_a = -1 * (((sprezyna.springiness / pudelko.weight) * krok4_v) - ((sprezyna.stiffness / pudelko.weight) * krok4_x))
+    krok4_a = -1 * ((sprezyna.stiffness * krok4_v) / pudelko.weight) - ((sprezyna.springiness * krok4_x) / pudelko.weight)
 
     pudelko.pos = pudelko.pos + 1/6 * (krok1_v + 2 * krok2_v + 2 * krok3_v + krok4_v) * dt
     sprezyna.axis = pudelko.pos - sprezyna.pos - vector(0.5, 0.0, 0.0)
 
-    print(scene.camera.pos)
-    print(scene.camera.axis)
+    #print(scene.camera.pos)
+    #print(scene.camera.axis)
