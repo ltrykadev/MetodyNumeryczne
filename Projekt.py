@@ -19,9 +19,6 @@ sufit = box(pos=vector(0.0, 1.5, 0.0), size=vector(6.5, 0.5, 3.0), color=color.r
 pudelko = box(pos=vector(position_initial, 0.0, 0.0), size=vector(1.0, 1.0, 1.0), color=color.yellow, weight=1.0, speed=vector(speed_initial, 0.0, 0.0), leave_matrix=0)
 sprezyna = helix(pos=vector(-2.75, 0.0, 0.0), axis=vector(0.0, 0.0, 0.0), radius=0.2, thickness=0.2, coils=10, color=color.green, stiffness=stiffness_initial, springiness=springiness_initial)
 
-dt = 0.01
-punkt_rownowagi = vector(0.0, 0.0, 0.0)
-
 scene.append_to_caption('Zakończyć symulację ? \n')
 def Menu(m):
     if m.selected == 'TAK':
@@ -73,6 +70,9 @@ def Menu(su):
         sufit.size = vector(0.0, 0.0, 0.0)
 menu(choices=['TAK', 'NIE'], bind=Menu)
 scene.append_to_caption('\n')
+
+dt = 0.01
+punkt_rownowagi = vector(0.0, 0.0, 0.0)
 
 while (pudelko.leave_matrix == 0):
     rate(500)
