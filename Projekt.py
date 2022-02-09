@@ -98,7 +98,6 @@ while (pudelko.leave_matrix == 0):
 
     pudelko.pos = pudelko.pos + 1/6 * (krok1_v + 2 * krok2_v + 2 * krok3_v + krok4_v) * dt
     sprezyna.axis = pudelko.pos - sprezyna.pos - vector(0.5, 0.0, 0.0)
-    #pudelko.speed = pudelko.speed + krok4_a * dt
 
     #print(scene.camera.pos)
     #print(scene.camera.axis)
