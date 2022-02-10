@@ -6,18 +6,20 @@ scene.title = "Metody numeryczne - Łukasz Tryka - 17812"
 scene.camera.pos = vector(1.5, 0.5, 8.5)
 scene.camera.axis = vector(-1.5, -0.5, -8.5)
 
-stiffness_initial = float(input("Wprowadz wartość poczatkową tłumienia np. 0.1: "))
-springiness_initial = float(input("Wprowadz wartość poczatkową sprężystości np. 2.0: "))
-position_initial = float(input("Wprowadz wartość poczatkową wychylenia np. 2.0: "))
-speed_initial = float(input("Wprowadz wartość poczatkową prędkości np. 1.0: "))
+if __name__ == '__main__':
 
-sciana1 = box(pos=vector(-3.0, 0.0, 0.0), size=vector(0.5, 3.0, 3.0), color=color.red)  # lewa
-sciana2 = box(pos=vector(0.0, 0.0, -1.25), size=vector(6.5, 3.0, 0.5), color=color.red) # tylna
-sciana3 = box(pos=vector(3.0, 0.0, 0.0), size=vector(0.5, 3.0, 3.0), color=color.red)   # prawa
-podloga = box(pos=vector(0.0, -1.5, 0.0), size=vector(6.5, 0.5, 3.0), color=color.red)
-sufit = box(pos=vector(0.0, 1.5, 0.0), size=vector(6.5, 0.5, 3.0), color=color.red)
-pudelko = box(pos=vector(position_initial, 0.0, 0.0), size=vector(1.0, 1.0, 1.0), color=color.yellow, weight=1.0, speed=vector(speed_initial, 0.0, 0.0), leave_matrix=0)
-sprezyna = helix(pos=vector(-2.75, 0.0, 0.0), axis=vector(0.0, 0.0, 0.0), radius=0.2, thickness=0.2, coils=10, color=color.green, stiffness=stiffness_initial, springiness=springiness_initial)
+    stiffness_initial = float(input("Wprowadz wartość poczatkową tłumienia np. 0.1: "))
+    springiness_initial = float(input("Wprowadz wartość poczatkową sprężystości np. 2.0: "))
+    position_initial = float(input("Wprowadz wartość poczatkową wychylenia np. 2.0: "))
+    speed_initial = float(input("Wprowadz wartość poczatkową prędkości np. 1.0: "))
+
+    sciana1 = box(pos=vector(-3.0, 0.0, 0.0), size=vector(0.5, 3.0, 3.0), color=color.red)  # lewa
+    sciana2 = box(pos=vector(0.0, 0.0, -1.25), size=vector(6.5, 3.0, 0.5), color=color.red) # tylna
+    sciana3 = box(pos=vector(3.0, 0.0, 0.0), size=vector(0.5, 3.0, 3.0), color=color.red)   # prawa
+    podloga = box(pos=vector(0.0, -1.5, 0.0), size=vector(6.5, 0.5, 3.0), color=color.red)
+    sufit = box(pos=vector(0.0, 1.5, 0.0), size=vector(6.5, 0.5, 3.0), color=color.red)
+    pudelko = box(pos=vector(position_initial, 0.0, 0.0), size=vector(1.0, 1.0, 1.0), color=color.yellow, weight=1.0, speed=vector(speed_initial, 0.0, 0.0), leave_matrix=0)
+    sprezyna = helix(pos=vector(-2.75, 0.0, 0.0), axis=vector(0.0, 0.0, 0.0), radius=0.2, thickness=0.2, coils=8, color=color.green, stiffness=stiffness_initial, springiness=springiness_initial)
 
 scene.append_to_caption('Zakończyć symulację ? \n')
 def Menu(m):
@@ -68,6 +70,24 @@ def Menu(su):
         sufit.size = vector(6.5, 0.5, 3.0)
     else:
         sufit.size = vector(0.0, 0.0, 0.0)
+menu(choices=['TAK', 'NIE'], bind=Menu)
+scene.append_to_caption('\n\n')
+
+scene.append_to_caption('Pokazać obiekt pudełko? ')
+def Menu(pu):
+    if pu.selected == 'TAK':
+        pudelko.size = vector(1.0, 1.0, 1.0)
+    else:
+        pudelko.size = vector(0.0, 0.0, 0.0)
+menu(choices=['TAK', 'NIE'], bind=Menu)
+scene.append_to_caption('\n')
+
+scene.append_to_caption('Pokazać obiekt sprężyna? ')
+def Menu(p):
+    if p.selected == 'TAK':
+        sprezyna.coils = 8
+    else:
+        sprezyna.coils = 0
 menu(choices=['TAK', 'NIE'], bind=Menu)
 scene.append_to_caption('\n')
 
